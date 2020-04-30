@@ -48,12 +48,35 @@ class LoginForm extends CFormModel
 	 */
 	public function authenticate($attribute,$params)
 	{
-		if(!$this->hasErrors())
-		{
-			$this->_identity=new UserIdentity($this->username,$this->password);
-			if(!$this->_identity->authenticate())
-				$this->addError('password','Incorrect username or password.');
-		}
+
+        $users_name = $this->user_name;
+        // print_r($users_name);
+        // echo $users_name;
+        // // $cond = "users_name = ".$users_name"";
+        $model=new Users;
+        $user = Users::model()->find(array(
+            'select'=>['users_id','users_name','users_email','users_password'],
+            'condition'=>'users_name="'.$users_name.'"',
+
+        ));
+        //print_r($user);
+
+
+        // die();
+        if($user === NULL)
+        {
+            echo '<script>alert("Login FailedInvalid Username")</script>';
+        } //
+        else if($user->users_password===$this->user_password)
+        {
+            $url="http://localhost/Assignment_2/index.php?r=users/view&id=".($user->users_id);
+            header("Location:$url");
+
+        }
+
+        else{
+            echo '<script>alert("Login Failed: invalid password")</script>';
+        }
 	}
 
 	/**
