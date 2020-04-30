@@ -7,8 +7,8 @@
  */
 class LoginForm extends CFormModel
 {
-	public $username;
-	public $password;
+	public $user_name;
+	public $user_password;
 	public $rememberMe;
 
 	private $_identity;
@@ -22,11 +22,11 @@ class LoginForm extends CFormModel
 	{
 		return array(
 			// username and password are required
-			array('username, password', 'required'),
+			array('user_name, user_password', 'required'),
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
 			// password needs to be authenticated
-			array('password', 'authenticate'),
+			array('user_password', 'authenticate'),
 		);
 	}
 
@@ -48,38 +48,36 @@ class LoginForm extends CFormModel
 	 */
 	public function authenticate($attribute,$params)
 	{
+		$users_name = $this->user_name;
+		// print_r($users_name);
+		// echo $users_name;
+		// // $cond = "users_name = ".$users_name"";
+		$model=new Users;
+		 $user = Users::model()->find(array(
+			 'select'=>['users_id','users_name','users_email','users_password'],
+			 'condition'=>'users_name="'.$users_name.'"',
 
-        $users_name = $this->user_name;
-        // print_r($users_name);
-        // echo $users_name;
-        // // $cond = "users_name = ".$users_name"";
-        $model=new Users;
-        $user = Users::model()->find(array(
-            'select'=>['users_id','users_name','users_email','users_password'],
-            'condition'=>'users_name="'.$users_name.'"',
-
-        ));
-        //print_r($user);
+		 ));
+		//print_r($user);
 
 
-        // die();
-        if($user === NULL)
-        {
-            echo '<script>alert("Login FailedInvalid Username")</script>';
-        } //
-        else if($user->users_password===$this->user_password)
-        {
-            $url="http://localhost/Assignment_2/index.php?r=users/view&id=".($user->users_id);
-            header("Location:$url");
+		// die();
+	if($user === NULL)
+	 {
+		echo '<script>alert("Login FailedInvalid Username")</script>';
+	 } //
+	 else if($user->users_password===$this->user_password)
+	 {
+		 $url="http://localhost/Assignment_2-master/index.php?r=users/view&id=".($user->users_id);
+		 header("Location:$url");
 
-        }
+	 }
 
-        else{
-            echo '<script>alert("Login Failed: invalid password")</script>';
-        }
+     else{
+		echo '<script>alert("Login Failed: invalid password")</script>';
 	}
 
-	/**
+	}/**
 	 * Logs in the user using the given username and password in the model.
 	 * @return boolean whether login is successful
 	 */
@@ -87,7 +85,7 @@ class LoginForm extends CFormModel
 	{
 		if($this->_identity===null)
 		{
-			$this->_identity=new UserIdentity($this->username,$this->password);
+			$this->_identity=new UserIdentity($this->user_name,$this->user_password);
 			$this->_identity->authenticate();
 		}
 		if($this->_identity->errorCode===UserIdentity::ERROR_NONE)

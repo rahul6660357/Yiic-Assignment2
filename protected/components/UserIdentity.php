@@ -17,6 +17,7 @@ class UserIdentity extends CUserIdentity
 	 */
 	public function authenticate()
 	{
+	//$users = User::model()->findByAttributes(array('username'=>$this->username));
 		$users=array(
 			// username => password
 			'demo'=>'demo',
@@ -31,3 +32,7 @@ class UserIdentity extends CUserIdentity
 		return !$this->errorCode;
 	}
 }
+
+
+
+

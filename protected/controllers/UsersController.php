@@ -48,35 +48,40 @@ class UsersController extends Controller
 		));
 	}
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate()
-	{
-		$model=new Users;
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+//  * Creates a new model.
+//  * If creation is successful, the browser will be redirected to the 'view' page.
+//  */
+public function actionCreate()
+{
+    $model=new Users;
 
-		if(isset($_POST['Users']))
-		{
-			$model->attributes=$_POST['Users'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->users_id));
-		}
+    // Uncomment the following line if AJAX validation is needed
+    // $this->performAjaxValidation($model);
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
-	}
+    if(isset($_POST['Users']))
+    {
+
+		$model->attributes=$_POST['Users'];
+		print_r($_POST['Users']['users_password']);
+         // $model->password = $model->hashPassword($_POST['Users']['users_password']);
+          if($model->save())
+              $this->redirect(array('view','id'=>$model->users_id));
+          else
+             $model->password = $_POST['User']['password'];
+    }
+
+    $this->render('create',array(
+        'model'=>$model,
+    ));
+}
 
 
 
 	public function actionLogin()
 	{
 		$model=new Users;
-		
+
 		// if it is ajax validation request
 		if(isset($_POST['ajax']) && $_POST['ajax']==='login-form')
 		{
@@ -148,13 +153,13 @@ class UsersController extends Controller
 		// ));
 		$this->render('index',array(
 			'model'=>$model,
-			
+
 		));
 	}
 
 
 
-	
+
 	/**
 	 * Manages all models.
 	 */

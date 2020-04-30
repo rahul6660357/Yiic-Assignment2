@@ -26,6 +26,7 @@
 		<?php echo $form->error($model,'users_email'); ?>
 	</div>
 
+
 	<div class="row">
 		<?php echo $form->labelEx($model,'password'); ?>
 		<?php echo $form->textField($model,'users_password',array('size'=>60,'maxlength'=>255)); ?>

@@ -17,4 +17,4 @@ $this->menu=array(
 
 <?php $this->renderPartial('_login_form', array('model'=>$model)); ?>
 
-<?php
+
